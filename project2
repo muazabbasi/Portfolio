@@ -1,0 +1,27 @@
+#Logrithmic model and MAPE Error
+
+setwd("/Users/Muaz/Desktop")
+my_train<- read.csv("MIS470housingtraining(1000x25).csv", header=TRUE)
+my_test<- read.csv("MIS470housingtesting(460x25).csv", header=TRUE)
+
+summary(MIS470housingtesting_460x25_$SalePrice)
+sd(MIS470housingtesting_460x25_$SalePrice)
+hist(MIS470housingtesting_460x25_$SalePrice)
+
+install.packages("gdata")
+library(gdata)
+my_data<-combine(my_train1, my_test1)
+
+model<-lm(my_train1$SalePrice~.,data=my_train1)
+summary(model)
+
+my_test2<-my_test1[complete.cases(my_test1),]
+head(my_test2,20)
+
+set.seed(0)
+price_info <- c(rnorm(460, mean = 177958, sd = 77569))
+t.test(price_info, mu = 177958)
+
+error<-head(my_test2$SalePrice,20)-predict(model, head(my_test2,20))
+MAPE<-mean(abs(100*error/head(my_test2$SalePrice,20)))
+MAPE
