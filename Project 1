@@ -1,0 +1,27 @@
+#Logistic Model Churn and Evaluation
+
+getwd()
+telco <- read.csv("MIS470Telcocustomer.csv", stringsAsFactors = TRUE)
+-*+------str(telco)
+
+# uncomment install.packages("caret") if already installed
+# install.packages("caret")
+library(caret)
+
+# Prep data. Partition data into training and testing partitions
+intrain<- createDataPartition(telco$Churn,p=0.7,list=FALSE)
+set.seed(2017)
+training<- telco[intrain,]
+testing<- telco[-intrain,]
+
+# Create a Logistic Model for Churn with training data
+LogModel <-glm(Churn ~ .,family=binomial(link="logit"),data=training)
+summary(model)
+
+# Evaluate model with testing data
+testing$Churn <- as.character(testing$Churn)
+testing$Churn[testing$Churn=="No"] <- "0"
+testing$Churn[testing$Churn=="Yes"] <- "1"
+fitted.results <- predict(LogModel,newdata=testing,type='response')
+fitted.results <- ifelse(fitted.results > 0.5,1,0)
+misClasificError <- mean(fitted.results != testing$Churn)
